@@ -1,0 +1,55 @@
+@UserAuthAPI_HostAddress = https://localhost:7001
+
+### Register a new user
+POST {{UserAuthAPI_HostAddress}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@gmail.com",
+  "password": "SecurePassword123!"
+}
+
+### Login with email and password
+POST {{UserAuthAPI_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "john.doe@gmail.com",
+  "password": "SecurePassword123!"
+}
+
+### Google Login (replace with actual Google ID token)
+POST {{UserAuthAPI_HostAddress}}/api/auth/google-login
+Content-Type: application/json
+
+{
+  "idToken": "your-google-id-token-here"
+}
+
+### Validate Gmail address
+GET {{UserAuthAPI_HostAddress}}/api/auth/validate-gmail?email=john.doe@gmail.com
+
+### Test invalid email (should fail)
+POST {{UserAuthAPI_HostAddress}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@yahoo.com",
+  "password": "SecurePassword123!"
+}
+
+### Test weak password (should fail)
+POST {{UserAuthAPI_HostAddress}}/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "test.user@gmail.com",
+  "password": "weak"
+}
+
+### Test with authorization header (replace with actual JWT token)
+GET {{UserAuthAPI_HostAddress}}/api/auth/validate-gmail?email=test@gmail.com
+Authorization: Bearer your-jwt-token-here
