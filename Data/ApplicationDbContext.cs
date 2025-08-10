@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Document> Documents { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,6 +54,32 @@ public class ApplicationDbContext : DbContext
                   .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             entity.Property(e => e.UpdatedAt);
+        });
+
+        // Document entity configuration
+        modelBuilder.Entity<Document>(entity =>
+        {
+            entity.HasKey(d => d.Id);
+            entity.Property(d => d.FileName)
+                  .IsRequired()
+                  .HasMaxLength(255);
+            entity.Property(d => d.FileType)
+                  .IsRequired()
+                  .HasMaxLength(50);
+            entity.Property(d => d.UploadDate)
+                  .IsRequired()
+                  .HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(d => d.EncryptedContent)
+                  .IsRequired();
+
+            entity.HasOne(d => d.User)
+                  .WithMany()
+                  .HasForeignKey(d => d.UserId)
+                  .OnDelete(DeleteBehavior.Cascade)
+                  .HasConstraintName("FK_Documents_Users_UserId");
+
+            entity.HasIndex(d => new { d.UserId, d.UploadDate })
+                  .HasDatabaseName("IX_Documents_UserId_UploadDate");
         });
     }
 

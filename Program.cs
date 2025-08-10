@@ -23,12 +23,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Repository Pattern
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
 
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 // HTTP Client for Google services
 builder.Services.AddHttpClient<IGoogleAuthService, GoogleAuthService>();
